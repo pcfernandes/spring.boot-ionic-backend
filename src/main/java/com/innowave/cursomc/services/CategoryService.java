@@ -1,21 +1,24 @@
 package com.innowave.cursomc.services;
 
-import java.util.Optional;
-
+import com.innowave.cursomc.domain.Category;
+import com.innowave.cursomc.repositories.CategoryRepository;
+import com.innowave.cursomc.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.innowave.cursomc.domain.Category;
-import com.innowave.cursomc.repositories.CategoryRepository;
+import java.util.Optional;
 
 @Service
 public class CategoryService {
-	
+
 	@Autowired
 	private CategoryRepository repo;
 	
 	public Category find(Integer id) {
-		Optional<Category> obj = repo.findById(id); 
+		Optional<Category> obj = repo.findById(id);
+		if(obj == null){
+			throw new ObjectNotFoundException("Object not found! Id: " + id +", Type: " + Category.class.getName());
+		}
 		return obj.orElse(null);
 	}
 	
