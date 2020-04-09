@@ -1,13 +1,8 @@
 package com.innowave.cursomc;
 
-import com.innowave.cursomc.domain.Category;
-import com.innowave.cursomc.domain.City;
-import com.innowave.cursomc.domain.Product;
-import com.innowave.cursomc.domain.State;
-import com.innowave.cursomc.repositories.CategoryRepository;
-import com.innowave.cursomc.repositories.CityRepository;
-import com.innowave.cursomc.repositories.ProductRepository;
-import com.innowave.cursomc.repositories.StateRepository;
+import com.innowave.cursomc.domain.*;
+import com.innowave.cursomc.domain.enums.ClientType;
+import com.innowave.cursomc.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -27,6 +22,13 @@ public class CursomcApplication implements CommandLineRunner{
 
 	@Autowired
 	private CityRepository cityRepository;
+
+	@Autowired
+	private ClientRepository clientRepository;
+
+	@Autowired
+	private AddressRepository addressRepository;
+
 	
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -49,6 +51,15 @@ public class CursomcApplication implements CommandLineRunner{
 		City c2 = new City(null, "Tavira", est2);
 		City c3 = new City(null, "Faro", est2);
 
+		Client cli1 = new Client(null, "Pedro Fernandes", "pedro@gmail.com","2838475393", ClientType.PHYSICALPERSON);
+
+		Address e1 = new Address(null, "Rua Benfica", "300", "Apt 40", "Garden", "1500-434", cli1,c1);
+		Address e2 = new Address(null, "Avenida alvalade", "23", "Apt 443", "Downtown", "1500-461", cli1,c2);
+
+		cli1.getPhones().addAll(Arrays.asList("93939393939","914575449439"));
+		cli1.getAddresses().addAll(Arrays.asList(e1,e2));
+
+
 		est1.getCities().addAll(Arrays.asList(c1));
 		est2.getCities().addAll(Arrays.asList(c2,c3));
 
@@ -63,6 +74,8 @@ public class CursomcApplication implements CommandLineRunner{
 		productRepository.saveAll(Arrays.asList(p1,p2,p3));
 		stateRepository.saveAll(Arrays.asList(est1,est2));
 		cityRepository.saveAll(Arrays.asList(c1,c2,c3));
+		clientRepository.saveAll(Arrays.asList(cli1));
+		addressRepository.saveAll(Arrays.asList(e1,e2));
 	}
 
 }
