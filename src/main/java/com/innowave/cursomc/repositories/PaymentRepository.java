@@ -1,10 +1,10 @@
 package com.innowave.cursomc.repositories;
 
-import com.innowave.cursomc.domain.Order;
+import com.innowave.cursomc.domain.Payment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface OrderRepository extends JpaRepository<Order,Integer> {
+public interface PaymentRepository extends JpaRepository<Payment,Integer> {
 	
 }

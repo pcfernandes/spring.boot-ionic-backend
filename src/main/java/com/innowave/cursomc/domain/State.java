@@ -1,9 +1,11 @@
 package com.innowave.cursomc.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@ToString(of = {"id","name"})
 public class State implements Serializable {
 
     @Id
@@ -21,7 +24,7 @@ public class State implements Serializable {
     private Integer id;
     private String name;
 
-    @JsonBackReference
+    @JsonIgnore
     @OneToMany(mappedBy = "state")
     private List<City> cities = new ArrayList<>();
 

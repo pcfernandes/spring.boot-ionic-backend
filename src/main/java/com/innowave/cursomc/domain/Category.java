@@ -16,7 +16,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Data
-//@ToString(of={"id","name","products"})
 @NoArgsConstructor
 @Entity
 public class Category implements Serializable{

@@ -2,12 +2,14 @@ package com.innowave.cursomc;
 
 import com.innowave.cursomc.domain.*;
 import com.innowave.cursomc.domain.enums.ClientType;
+import com.innowave.cursomc.domain.enums.PaymentStatus;
 import com.innowave.cursomc.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 @SpringBootApplication
@@ -29,7 +31,16 @@ public class CursomcApplication implements CommandLineRunner{
 	@Autowired
 	private AddressRepository addressRepository;
 
-	
+	@Autowired
+	private ClientOrderRepository clientOrderRepository;
+
+	@Autowired
+	private PaymentRepository paymentRepository;
+
+	@Autowired
+	private ItemOrderRepository itemOrderRepository;
+
+
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
 	}
@@ -51,7 +62,7 @@ public class CursomcApplication implements CommandLineRunner{
 		City c2 = new City(null, "Tavira", est2);
 		City c3 = new City(null, "Faro", est2);
 
-		Client cli1 = new Client(null, "Pedro Fernandes", "pedro@gmail.com","2838475393", ClientType.PHYSICALPERSON);
+		Client cli1 = new Client(null, "Pedro Fernandes", "pedro@gmail.com","2838475393", ClientType.PHYSICAL_PERSON);
 
 		Address e1 = new Address(null, "Rua Benfica", "300", "Apt 40", "Garden", "1500-434", cli1,c1);
 		Address e2 = new Address(null, "Avenida alvalade", "23", "Apt 443", "Downtown", "1500-461", cli1,c2);
@@ -76,6 +87,37 @@ public class CursomcApplication implements CommandLineRunner{
 		cityRepository.saveAll(Arrays.asList(c1,c2,c3));
 		clientRepository.saveAll(Arrays.asList(cli1));
 		addressRepository.saveAll(Arrays.asList(e1,e2));
+
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		ClientOrder ped1 = new ClientOrder(null, sdf.parse("30/09/2017 10:32"),cli1,e1);
+		ClientOrder ped2 = new ClientOrder(null,sdf.parse("10/10/2017 19:35"), cli1,e2);
+
+		Payment pagto1 = new CardPayment(null, PaymentStatus.PAYED, ped1, 6);
+		ped1.setPayment(pagto1);
+
+		Payment pagto2 = new PaymentWireTransfer(null, PaymentStatus.PENDING,ped2,sdf.parse("20/10/2017 00:00"), null);
+		ped2.setPayment(pagto2);
+
+		cli1.getClientOrders().addAll(Arrays.asList(ped1,ped2));
+
+		clientOrderRepository.saveAll(Arrays.asList(ped1,ped2));
+		paymentRepository.saveAll(Arrays.asList(pagto1,pagto2));
+
+		ItemOrder ip1 = new ItemOrder(p1,ped1,0.00,1,2000.00);
+		ItemOrder ip2 = new ItemOrder(p3,ped1,0.00,2,80.00);
+		ItemOrder ip3 = new ItemOrder(p2,ped2,100.00,1,800.00);
+
+
+		p1.getItemOrders().addAll(Arrays.asList(ip1));
+		p2.getItemOrders().addAll(Arrays.asList(ip3));
+		p3.getItemOrders().addAll(Arrays.asList(ip2));
+
+		ped2.getItemOrders().addAll(Arrays.asList(ip3));
+		ped1.getItemOrders().addAll(Arrays.asList(ip1,ip2));
+
+		itemOrderRepository.saveAll(Arrays.asList(ip1,ip2,ip3));
+
+
 	}
 
 }
