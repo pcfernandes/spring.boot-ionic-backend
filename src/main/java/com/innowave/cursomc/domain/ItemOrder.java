@@ -1,5 +1,6 @@
 package com.innowave.cursomc.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import java.io.Serializable;
 @Entity
 public class ItemOrder implements Serializable {
 
+    @JsonIgnore
     @EmbeddedId
     private ItemOrderPK id = new ItemOrderPK();
     private Double discount;
@@ -26,6 +28,7 @@ public class ItemOrder implements Serializable {
         this.price = price;
     }
 
+    @JsonIgnore
     public ClientOrder getClientOrder(){
         return id.getClientOrder();
     }

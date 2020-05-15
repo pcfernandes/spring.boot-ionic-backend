@@ -1,10 +1,8 @@
 package com.innowave.cursomc.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;

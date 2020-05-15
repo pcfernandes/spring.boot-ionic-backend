@@ -25,9 +25,7 @@ public class Category implements Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private String name;
-	
-	//@JsonManagedReference - The pair @JsonManagedReference/@JsonBackReference are being ignored for some unknown reason using @jsonIgnore instead
-	@JsonManagedReference
+
 	@ManyToMany(mappedBy="categories")
 	private List<Product> products = new ArrayList<>();
 

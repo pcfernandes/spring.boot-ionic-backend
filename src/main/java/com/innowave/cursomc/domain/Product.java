@@ -1,7 +1,6 @@
 package com.innowave.cursomc.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -9,12 +8,10 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Data
-@ToString(of={"id","name","price","itemOrders"})
+@ToString(of={"id","name","price"})
 @Entity
 @NoArgsConstructor
 public class Product implements Serializable {
@@ -26,11 +23,11 @@ public class Product implements Serializable {
 	private String name;
 	private Double price;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "id.product")
 	private List<ItemOrder> itemOrders = new ArrayList<>();
 
-	//@JsonBackReference - The pair @JsonManagedReference/@JsonBackReference are being ignored for some unknown reason using @jsonIgnore instead
-	@JsonBackReference
+	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "PRODUCT_CATEGORY",
 		joinColumns = @JoinColumn(name = "product_id"),
@@ -45,6 +42,7 @@ public class Product implements Serializable {
 		this.price = price;
 	}
 
+	@JsonIgnore
 	public List<ClientOrder> getClientOrders(){
 		List<ClientOrder> list = new ArrayList<>();
 

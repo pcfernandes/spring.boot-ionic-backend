@@ -1,6 +1,6 @@
 package com.innowave.cursomc.domain;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.innowave.cursomc.domain.enums.ClientType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,7 +25,6 @@ public class Client implements Serializable {
     private String nif;
     private Integer type;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "client")
     private List<Address> addresses = new ArrayList<>();
 
@@ -34,6 +33,7 @@ public class Client implements Serializable {
     private Set<String> phones = new HashSet<>();
 
     @OneToMany(mappedBy = "client")
+    @JsonIgnore
     private List<ClientOrder> clientOrders = new ArrayList<>();
 
     public Client(Integer id, String name, String email, String nif, ClientType type) {

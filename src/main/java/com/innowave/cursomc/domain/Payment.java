@@ -1,5 +1,6 @@
 package com.innowave.cursomc.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.innowave.cursomc.domain.enums.PaymentStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,6 +23,7 @@ public abstract class Payment implements Serializable {
     @OneToOne
     @JoinColumn(name = "order_id")
     @MapsId
+    @JsonIgnore
     private ClientOrder clientOrder;
 
     public Payment(Integer id, PaymentStatus paymentStatus, ClientOrder clientOrder){
