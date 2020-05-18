@@ -25,11 +25,12 @@ public class Client implements Serializable {
     private String nif;
     private Integer type;
 
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     private List<Address> addresses = new ArrayList<>();
 
     @ElementCollection
     @CollectionTable(name="PHONE")
+    //TODO: Minimum is 1, maximum is 3
     private Set<String> phones = new HashSet<>();
 
     @OneToMany(mappedBy = "client")

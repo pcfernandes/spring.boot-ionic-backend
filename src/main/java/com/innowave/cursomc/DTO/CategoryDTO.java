@@ -1,6 +1,7 @@
 package com.innowave.cursomc.DTO;
 
 import com.innowave.cursomc.domain.Category;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
@@ -10,7 +11,7 @@ import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
-
+@AllArgsConstructor
 public class CategoryDTO implements Serializable {
 
     private Integer id;
