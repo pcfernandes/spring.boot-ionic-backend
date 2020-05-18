@@ -2,8 +2,10 @@ package com.innowave.cursomc.services;
 
 import com.innowave.cursomc.domain.Category;
 import com.innowave.cursomc.repositories.CategoryRepository;
+import com.innowave.cursomc.services.exceptions.DataIntegrityException;
 import com.innowave.cursomc.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -24,5 +26,21 @@ public class CategoryService {
 
 		obj.setId(null);
 		return repo.save(obj);
+	}
+
+	public Category update(Category obj){
+
+		find(obj.getId());
+		return repo.save(obj);
+	}
+
+	public void delete(Integer id){
+		find(id);
+		try {
+			repo.deleteById(id);
+		}
+		catch(DataIntegrityViolationException e ){
+			throw new DataIntegrityException("Not possible to delete a category that contains products.");
+		}
 	}
 }
