@@ -18,6 +18,5 @@ public class CategoryDTO implements Serializable {
         this.id = obj.getId();
         this.name = obj.getName();
     }
--
 }
 

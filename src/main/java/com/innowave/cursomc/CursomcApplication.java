@@ -49,6 +49,11 @@ public class CursomcApplication implements CommandLineRunner{
 	public void run(String... args) throws Exception {
 		Category cat1  = new Category(null,"Informatics");
 		Category cat2  = new Category(null,"Office");
+		Category cat3  = new Category(null,"Bed, Table, bath");
+		Category cat4  = new Category(null,"Electronics");
+		Category cat5  = new Category(null,"Garden");
+		Category cat6  = new Category(null,"Decor");
+		Category cat7  = new Category(null,"Perfume");
 		
 		
 		Product p1 = new Product(null, "Computer", 2000.00);
@@ -81,7 +86,7 @@ public class CursomcApplication implements CommandLineRunner{
 		p2.getCategories().addAll(Arrays.asList(cat1,cat2));
 		p3.getCategories().addAll(Arrays.asList(cat1));
 		
-		categoryRepository.saveAll(Arrays.asList(cat1,cat2));
+		categoryRepository.saveAll(Arrays.asList(cat1,cat2,cat3,cat4,cat5,cat6,cat7));
 		productRepository.saveAll(Arrays.asList(p1,p2,p3));
 		stateRepository.saveAll(Arrays.asList(est1,est2));
 		cityRepository.saveAll(Arrays.asList(c1,c2,c3));
