@@ -1,41 +1,43 @@
 package com.innowave.cursomc.services.validations;
 
-import com.innowave.cursomc.DTO.NewClientDTO;
+import com.innowave.cursomc.DTO.ClientDTO;
 import com.innowave.cursomc.domain.Client;
 import com.innowave.cursomc.domain.enums.ClientType;
 import com.innowave.cursomc.repositories.ClientRepository;
 import com.innowave.cursomc.resources.exceptions.FieldMessage;
 import com.innowave.cursomc.services.validations.utils.PT;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.HandlerMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class ClientInsertValidator implements ConstraintValidator<ClientInsert, NewClientDTO> {
+public class ClientUpdateValidator implements ConstraintValidator<ClientUpdate, ClientDTO> {
+
+    @Autowired
+    private HttpServletRequest request;
 
     @Autowired
     private ClientRepository clientRepository;
 
     @Override
-    public void initialize(ClientInsert ann) {
+    public void initialize(ClientUpdate ann) {
     }
 
     @Override
-    public boolean isValid(NewClientDTO objDto, ConstraintValidatorContext context) {
+    public boolean isValid(ClientDTO objDto, ConstraintValidatorContext context) {
         List<FieldMessage> list = new ArrayList<>();
 
-        if(objDto.getType().equals(ClientType.PHYSICAL_PERSON.getCod()) && !PT.isValidPersonalNif(objDto.getNif())){
-            list.add(new FieldMessage("Nif","Invalid Personal NIF"));
-        }
-        if(objDto.getType().equals(ClientType.LEGAL_PERSON.getCod()) && !PT.isValidCorplNif(objDto.getNif())){
-            list.add(new FieldMessage("Nif","Invalid Corporate NIF"));
-        }
+        Map<String,String> map = ( Map<String,String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+        Integer uriID = Integer.parseInt(map.get("id"));
 
         Client client = clientRepository.findByEmail(objDto.getEmail());
 
-        if(client != null){
+        if(client != null && !client.getId().equals(uriID)){
             list.add(new FieldMessage("Email","This Email already exists"));
         }
 

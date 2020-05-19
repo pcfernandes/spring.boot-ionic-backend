@@ -25,7 +25,7 @@ import java.util.Optional;
 public class ClientService {
 
 	@Autowired
-	private ClientRepository repo;
+	private ClientRepository clientRepository;
 
 	@Autowired
 	private AddressRepository addressRepository;
@@ -34,28 +34,28 @@ public class ClientService {
 	public Client insert(Client obj){
 
 		obj.setId(null);
-		obj = repo.save(obj);
+		obj = clientRepository.save(obj);
 		addressRepository.saveAll(obj.getAddresses());
 		return obj;
 	}
 
 
 	public Client find(Integer id) {
-		Optional<Client> obj = repo.findById(id);
+		Optional<Client> obj = clientRepository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Object not found! Id: " + id + ", Type: " + Client.class.getName()));
 	}
 	public Client update(Client obj){
 
 		Client newObj = find(obj.getId());
-		updateDate(newObj,obj);
-		return repo.save(newObj);
+		updateData(newObj,obj);
+		return clientRepository.save(newObj);
 	}
 
 	public void delete(Integer id){
 		find(id);
 		try {
-			repo.deleteById(id);
+			clientRepository.deleteById(id);
 		}
 		catch(DataIntegrityViolationException e ){
 			throw new DataIntegrityException("Not possible to delete a client that contains client orders.");
@@ -63,12 +63,12 @@ public class ClientService {
 	}
 
 	public List<Client> findAll(){
-		return repo.findAll();
+		return clientRepository.findAll();
 	}
 
 	public Page<Client> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
-		return repo.findAll(pageRequest);
+		return clientRepository.findAll(pageRequest);
 	}
 
 	public Client fromDTO(ClientDTO objDTO){
@@ -91,7 +91,7 @@ public class ClientService {
 	}
 
 
-	private void updateDate(Client newObj, Client obj){
+	private void updateData(Client newObj, Client obj){
 		newObj.setName(obj.getName());
 		newObj.setEmail(obj.getEmail());
 	}

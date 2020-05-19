@@ -1,6 +1,7 @@
 package com.innowave.cursomc.DTO;
 
 import com.innowave.cursomc.domain.Client;
+import com.innowave.cursomc.services.validations.ClientUpdate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ClientUpdate
 public class ClientDTO implements Serializable {
 
     private Integer id;
