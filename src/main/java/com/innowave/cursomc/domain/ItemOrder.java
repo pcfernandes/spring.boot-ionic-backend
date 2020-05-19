@@ -35,5 +35,8 @@ public class ItemOrder implements Serializable {
     public Product getProduct(){
         return id.getProduct();
     }
+    public double getSubTotal(){
+        return(price-discount)*quantity;
+    }
 
 }
