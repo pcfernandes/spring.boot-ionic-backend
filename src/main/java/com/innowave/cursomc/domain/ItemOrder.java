@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 @NoArgsConstructor
 @Data
@@ -43,6 +45,21 @@ public class ItemOrder implements Serializable {
     }
     public void setClientOrder(ClientOrder clientOrder) {
         id.setClientOrder(clientOrder);
+    }
+
+    @Override
+    public String toString() {
+        NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "PT"));
+        StringBuilder builder = new StringBuilder();
+        builder.append(this.getProduct().getName());
+        builder.append(", Qty: ");
+        builder.append(this.getQuantity());
+        builder.append(", Unit Price: ");
+        builder.append(nf.format(this.getPrice()));
+        builder.append(", Subtotal: ");
+        builder.append(nf.format(getSubTotal()));
+        builder.append("\n");
+        return builder.toString();
     }
 
 }

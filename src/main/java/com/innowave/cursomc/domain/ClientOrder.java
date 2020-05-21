@@ -8,9 +8,12 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 @Entity
 @NoArgsConstructor
@@ -53,5 +56,27 @@ public class ClientOrder implements Serializable {
             sum = sum + io.getSubTotal();
         }
         return sum;
+    }
+
+    @Override
+    public String toString() {
+        NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "PT"));
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:MM:ss");
+        StringBuilder builder = new StringBuilder();
+        builder.append("Client Order number: ");
+        builder.append(getId());
+        builder.append(", Instant: ");
+        builder.append(sdf.format(this.getInstant()));
+        builder.append(", Client: ");
+        builder.append(this.getClient().getName());
+        builder.append(", Payment Status: ");
+        builder.append(this.payment.getPaymentStatus().getDescription());
+        builder.append("\nDetails:\n");
+        for (ItemOrder io : this.getItemOrders()) {
+            builder.append(io.toString());
+        }
+        builder.append("Total Value: ");
+        builder.append(nf.format(this.getTotalValue()));
+        return builder.toString();
     }
 }
