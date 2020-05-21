@@ -69,7 +69,7 @@ public class DBService {
         City c2 = new City(null, "Tavira", est2);
         City c3 = new City(null, "Faro", est2);
 
-        Client cli1 = new Client(null, "Pedro Fernandes", "pedro@gmail.com","2838475393", ClientType.PHYSICAL_PERSON);
+        Client cli1 = new Client(null, "Pedro Fernandes", "pcruzfernandes12@gmail.com","2838475393", ClientType.PHYSICAL_PERSON);
 
         Address e1 = new Address(null, "Rua Benfica", "300", "Apt 40", "Garden", "1500-434", cli1,c1);
         Address e2 = new Address(null, "Avenida alvalade", "23", "Apt 443", "Downtown", "1500-461", cli1,c2);

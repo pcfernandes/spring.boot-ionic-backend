@@ -34,6 +34,9 @@ public class ClientOrderService {
 
 	@Autowired
 	private ClientRepository clientRepository;
+
+	@Autowired
+	private EmailService emailService;
 	
 	public ClientOrder find(Integer id) {
 		Optional<ClientOrder> obj = clientOrderRepository.findById(id);
@@ -57,11 +60,11 @@ public class ClientOrderService {
 		for(ItemOrder io : obj.getItemOrders()){
 			io.setDiscount(0.0);
 			io.setProduct(productRepository.findById(io.getProduct().getId()).get());
-			io.setPrice( io.getProduct().getPrice());  
+			io.setPrice( io.getProduct().getPrice());
 			io.setClientOrder(obj);
 		}
 		itemOrderRepository.saveAll(obj.getItemOrders());
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+obj);
+		emailService.sendOrderConfirmationEmail(obj);
 		return obj;
 	}
 	
