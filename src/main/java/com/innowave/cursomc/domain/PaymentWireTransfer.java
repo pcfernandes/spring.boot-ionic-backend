@@ -1,6 +1,7 @@
 package com.innowave.cursomc.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.innowave.cursomc.domain.enums.PaymentStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +14,7 @@ import java.util.Date;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-
+@JsonTypeName("paymentWithTransfer")
 public class PaymentWireTransfer extends Payment {
 
     @JsonFormat(pattern = "dd/MM/yyyy")

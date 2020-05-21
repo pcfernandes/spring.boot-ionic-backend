@@ -1,6 +1,7 @@
 package com.innowave.cursomc.resources;
 
 import com.innowave.cursomc.DTO.ProductDTO;
+import com.innowave.cursomc.domain.ClientOrder;
 import com.innowave.cursomc.domain.Product;
 import com.innowave.cursomc.resources.utils.URL;
 import com.innowave.cursomc.services.ProductService;
@@ -8,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -42,4 +46,6 @@ public class ProductResource {
 		return ResponseEntity.ok().body(listDto);
 
 	}
+
+
 }
