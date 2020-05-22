@@ -5,6 +5,7 @@ import com.innowave.cursomc.domain.enums.ClientType;
 import com.innowave.cursomc.domain.enums.PaymentStatus;
 import com.innowave.cursomc.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -39,6 +40,9 @@ public class DBService {
     @Autowired
     private ItemOrderRepository itemOrderRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     public void instantiateTestDatabase() throws ParseException {
         Category cat1  = new Category(null,"Informatics");
         Category cat2  = new Category(null,"Office");
@@ -69,7 +73,7 @@ public class DBService {
         City c2 = new City(null, "Tavira", est2);
         City c3 = new City(null, "Faro", est2);
 
-        Client cli1 = new Client(null, "Pedro Fernandes", "pcruzfernandes12@gmail.com","2838475393", ClientType.PHYSICAL_PERSON);
+        Client cli1 = new Client(null, "Pedro Fernandes", "pcruzfernandes12@gmail.com","2838475393", ClientType.PHYSICAL_PERSON,bCryptPasswordEncoder.encode("123"));
 
         Address e1 = new Address(null, "Rua Benfica", "300", "Apt 40", "Garden", "1500-434", cli1,c1);
         Address e2 = new Address(null, "Avenida alvalade", "23", "Apt 443", "Downtown", "1500-461", cli1,c2);

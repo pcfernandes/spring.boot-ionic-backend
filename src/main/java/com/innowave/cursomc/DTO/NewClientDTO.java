@@ -26,6 +26,9 @@ public class NewClientDTO  implements Serializable {
     private String nif;
     private Integer type;
 
+    @NotEmpty(message = "Mandatory field")
+    private String password;
+
     //Address Info
     @NotEmpty(message = "Mandatory field")
     private String streetName;
