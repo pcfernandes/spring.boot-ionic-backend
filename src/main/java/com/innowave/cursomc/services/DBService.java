@@ -3,6 +3,7 @@ package com.innowave.cursomc.services;
 import com.innowave.cursomc.domain.*;
 import com.innowave.cursomc.domain.enums.ClientType;
 import com.innowave.cursomc.domain.enums.PaymentStatus;
+import com.innowave.cursomc.domain.enums.Profile;
 import com.innowave.cursomc.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -74,13 +75,17 @@ public class DBService {
         City c3 = new City(null, "Faro", est2);
 
         Client cli1 = new Client(null, "Pedro Fernandes", "pcruzfernandes12@gmail.com","2838475393", ClientType.PHYSICAL_PERSON,bCryptPasswordEncoder.encode("123"));
+        Client cli2 = new Client(null, "Pedro Fernandes Segundo", "pcruzfernandes13@gmail.com","2838475393", ClientType.PHYSICAL_PERSON,bCryptPasswordEncoder.encode("123"));
+        cli2.addProfile(Profile.ADMIN);
 
         Address e1 = new Address(null, "Rua Benfica", "300", "Apt 40", "Garden", "1500-434", cli1,c1);
         Address e2 = new Address(null, "Avenida alvalade", "23", "Apt 443", "Downtown", "1500-461", cli1,c2);
+        Address e3 = new Address(null, "Avenida bla", "2", "Apt 3", "Down", "1500-4361", cli1,c2);
 
         cli1.getPhones().addAll(Arrays.asList("93939393939","914575449439"));
         cli1.getAddresses().addAll(Arrays.asList(e1,e2));
-
+        cli2.getPhones().addAll(Arrays.asList("93555393939","914573349439"));
+        cli2.getAddresses().addAll(Arrays.asList(e3));
 
         est1.getCities().addAll(Arrays.asList(c1));
         est2.getCities().addAll(Arrays.asList(c2,c3));
@@ -110,8 +115,8 @@ public class DBService {
         productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11));
         stateRepository.saveAll(Arrays.asList(est1,est2));
         cityRepository.saveAll(Arrays.asList(c1,c2,c3));
-        clientRepository.saveAll(Arrays.asList(cli1));
-        addressRepository.saveAll(Arrays.asList(e1,e2));
+        clientRepository.saveAll(Arrays.asList(cli1,cli2));
+        addressRepository.saveAll(Arrays.asList(e1,e2,e3));
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         ClientOrder ped1 = new ClientOrder(null, sdf.parse("30/09/2017 10:32"),cli1,e1);

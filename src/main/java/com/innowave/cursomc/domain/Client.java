@@ -2,6 +2,7 @@ package com.innowave.cursomc.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.innowave.cursomc.domain.enums.ClientType;
+import com.innowave.cursomc.domain.enums.Profile;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,9 +12,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
-@NoArgsConstructor
 @Entity
 public class Client implements Serializable {
 
@@ -32,6 +33,10 @@ public class Client implements Serializable {
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     private List<Address> addresses = new ArrayList<>();
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "PROFILES")
+    private Set<Integer> profiles = new HashSet<>();
+
     @ElementCollection
     @CollectionTable(name="PHONE")
     //TODO: Minimum is 1, maximum is 3
@@ -41,6 +46,10 @@ public class Client implements Serializable {
     @JsonIgnore
     private List<ClientOrder> clientOrders = new ArrayList<>();
 
+
+    public Client(){
+        addProfile(Profile.CLIENT);
+    }
     public Client(Integer id, String name, String email, String nif, ClientType type, String password) {
         this.id = id;
         this.name = name;
@@ -48,6 +57,8 @@ public class Client implements Serializable {
         this.nif = nif;
         this.type = (type==null)? null : type.getCod();
         this.password = password;
+        addProfile(Profile.CLIENT);
+
     }
 
     public ClientType getType() {
@@ -58,5 +69,12 @@ public class Client implements Serializable {
         this.type = type.getCod();
     }
 
+    public Set<Profile> getProfiles(){
+        return profiles.stream().map(x -> Profile.toEnum(x)).collect(Collectors.toSet());
+    }
+
+    public void addProfile(Profile profile){
+        profiles.add(profile.getCod());
+    }
 
 }
