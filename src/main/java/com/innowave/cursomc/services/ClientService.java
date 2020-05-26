@@ -2,12 +2,15 @@ package com.innowave.cursomc.services;
 
 import com.innowave.cursomc.DTO.ClientDTO;
 import com.innowave.cursomc.DTO.NewClientDTO;
+import com.innowave.cursomc.Security.UserSS;
 import com.innowave.cursomc.domain.Address;
 import com.innowave.cursomc.domain.City;
 import com.innowave.cursomc.domain.Client;
 import com.innowave.cursomc.domain.enums.ClientType;
+import com.innowave.cursomc.domain.enums.Profile;
 import com.innowave.cursomc.repositories.AddressRepository;
 import com.innowave.cursomc.repositories.ClientRepository;
+import com.innowave.cursomc.services.exceptions.AuthorizaationException;
 import com.innowave.cursomc.services.exceptions.DataIntegrityException;
 import com.innowave.cursomc.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +48,12 @@ public class ClientService {
 
 
 	public Client find(Integer id) {
+
+		UserSS user = UserService.authenticated();
+		if(user == null || !user.hasRole(Profile.ADMIN) && !id.equals(user.getId())){
+			throw new AuthorizaationException("Access Denied");
+		}
+
 		Optional<Client> obj = clientRepository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Object not found! Id: " + id + ", Type: " + Client.class.getName()));
