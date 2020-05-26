@@ -2,6 +2,7 @@ package com.innowave.cursomc.config;
 
 import com.innowave.cursomc.Security.JWTAuthenticationFilter;
 import com.innowave.cursomc.Security.JWTUtils;
+import com.innowave.cursomc.Security.JwtAuthorizationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -57,6 +58,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtils));
+        http.addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtUtils,userDetailsService));
+
     }
 
     @Override
