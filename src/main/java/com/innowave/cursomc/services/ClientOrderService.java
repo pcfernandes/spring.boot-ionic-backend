@@ -1,13 +1,18 @@
 package com.innowave.cursomc.services;
 
+import com.innowave.cursomc.Security.UserSS;
+import com.innowave.cursomc.domain.Client;
 import com.innowave.cursomc.domain.ClientOrder;
 import com.innowave.cursomc.domain.ItemOrder;
 import com.innowave.cursomc.domain.PaymentWireTransfer;
-import com.innowave.cursomc.domain.Product;
 import com.innowave.cursomc.domain.enums.PaymentStatus;
 import com.innowave.cursomc.repositories.*;
+import com.innowave.cursomc.services.exceptions.AuthorizaationException;
 import com.innowave.cursomc.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,5 +72,17 @@ public class ClientOrderService {
 		emailService.sendOrderConfirmationHtmlEmail(obj);
 		return obj;
 	}
-	
+
+	public Page<ClientOrder> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
+
+		UserSS user = UserService.authenticated();
+		if(user == null){
+			throw new AuthorizaationException("Access Denied");
+
+		}
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+		Client client = clientRepository.findById(user.getId()).get();
+		return clientOrderRepository.findByClient(client,pageRequest);
+	}
 }
+
