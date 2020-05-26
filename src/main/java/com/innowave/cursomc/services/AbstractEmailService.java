@@ -1,5 +1,6 @@
 package com.innowave.cursomc.services;
 
+import com.innowave.cursomc.domain.Client;
 import com.innowave.cursomc.domain.ClientOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -68,5 +69,22 @@ public abstract class AbstractEmailService implements EmailService {
         mmh.setSentDate(new Date(System.currentTimeMillis()));
         mmh.setText(htmlFromTemplateClientOrder(obj));
         return mimeMessage;
+    }
+
+    @Override
+    public void sendNewPasswordEmail(Client client, String newPassword) {
+        SimpleMailMessage sm = prepareNewPasswordEmail(client, newPassword);
+        sendEmail(sm);
+    }
+
+    protected SimpleMailMessage prepareNewPasswordEmail(Client client, String newPassword){
+
+        SimpleMailMessage sm =  new SimpleMailMessage();
+        sm.setTo(client.getEmail());
+        sm.setFrom(sender);
+        sm.setSubject("Request new password");
+        sm.setSentDate(new Date(System.currentTimeMillis()));
+        sm.setText("New password: " + newPassword);
+        return sm;
     }
 }

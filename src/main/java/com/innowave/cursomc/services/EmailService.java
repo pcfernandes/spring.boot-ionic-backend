@@ -1,5 +1,6 @@
 package com.innowave.cursomc.services;
 
+import com.innowave.cursomc.domain.Client;
 import com.innowave.cursomc.domain.ClientOrder;
 import org.springframework.mail.SimpleMailMessage;
 
@@ -15,5 +16,6 @@ public interface EmailService {
 
     void sendHtmlEmail(MimeMessage msg);
 
+    void sendNewPasswordEmail(Client client, String newPass);
 
 }
