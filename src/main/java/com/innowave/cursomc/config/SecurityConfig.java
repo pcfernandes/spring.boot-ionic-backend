@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -23,6 +24,7 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -41,9 +43,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String[] Public_Matches_GET = {
             "/products/**",
             "/categories/**",
-            "/clients/**"
     };
 
+    private static final String[] Public_Matches_POST = {
+            "/clients/**"
+    };
     @Override
     protected void configure(HttpSecurity http) throws Exception{
 
@@ -55,6 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(Public_Matches).permitAll()
                 .antMatchers(HttpMethod.GET, Public_Matches_GET).permitAll()
+                .antMatchers(HttpMethod.POST, Public_Matches_POST).permitAll()
                 .anyRequest().authenticated();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtils));
