@@ -46,6 +46,7 @@ public class Client implements Serializable {
     @JsonIgnore
     private List<ClientOrder> clientOrders = new ArrayList<>();
 
+    private String imageUrl;
 
     public Client(){
         addProfile(Profile.CLIENT);
